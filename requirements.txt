@@ -7,3 +7,4 @@ psycopg2
 pillow
 python-dotenv
 django-adminlte3
+python-dateutil~=2.8.2
