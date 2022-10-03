@@ -6,4 +6,4 @@ user_router = Router()
 
 @user_router.message(commands=["start"])
 async def user_start(message: Message):
-    await message.reply("Вітаю, звичайний користувач!")
+    await message.reply("Добро пожаловать")
