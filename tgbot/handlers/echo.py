@@ -1,5 +1,5 @@
 from aiogram import types, Router, F
-from aiogram.dispatcher.fsm.context import FSMContext
+from aiogram.fsm.context import FSMContext
 from aiogram.utils.markdown import hcode
 
 echo_router = Router()
