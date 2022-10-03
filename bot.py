@@ -11,12 +11,16 @@ from tgbot.handlers.admin import admin_router
 from tgbot.handlers.echo import echo_router
 from tgbot.handlers.user import user_router
 from tgbot.middlewares.config import ConfigMiddleware
+from tgbot.misc.logging import configure_logger
+from tgbot.misc.set_bot_commands import set_commands
 from tgbot.services import broadcaster
 
 logger = logging.getLogger(__name__)
 
 
 async def on_startup(bot: Bot, admin_ids: list[int]):
+    await set_commands(bot)
+    configure_logger(True)
     await broadcaster.broadcast(bot, admin_ids, "Бот зупущен")
 
 
@@ -36,10 +40,6 @@ def setup_django():
 
 async def main():
     setup_django()
-    logging.basicConfig(
-        level=logging.INFO,
-        format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
-    )
     logger.info("Starting bot")
     config = load_config(".env")
 
@@ -56,7 +56,6 @@ async def main():
 
     register_global_middlewares(dp, config)
 
-    # await set_default_commands()
     await on_startup(bot, config.tg_bot.admin_ids)
     await dp.start_polling(bot)
 
@@ -65,4 +64,4 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.error("Бот зупущен")
+        logger.error("Возникла ошибка")
