@@ -1,0 +1,11 @@
+aiogram>=3.0.0b3
+aioredis~=2.0
+environs~=9.0
+Django
+psycopg2-binary
+psycopg2
+pillow
+python-dotenv
+django-adminlte3
+python-dateutil~=2.8.2
+loguru
