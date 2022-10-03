@@ -5,6 +5,8 @@ import os
 import django
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage
+from aioredis import Redis
 
 from tgbot.config import load_config
 from tgbot.handlers.admin import admin_router
@@ -42,13 +44,16 @@ async def main():
     setup_django()
     logger.info("Starting bot")
     config = load_config(".env")
-
-    storage = MemoryStorage()
+    if config.misc.user_redis:
+        redis = Redis(host=config.redis.host, port=config.redis.port, db=config.redis.db_fsm)
+        storage = RedisStorage(redis=redis)
+    else:
+        storage = MemoryStorage()
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher(storage=storage)
 
     for router in [
-        admin_router,
+        # admin_router,
         user_router,
         echo_router
     ]:
